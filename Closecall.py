@@ -1,7 +1,7 @@
 import arcade
 from models import World,Block
 SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 800
+SCREEN_HEIGHT = 780
 Player_Line_X = 300
 Player_Line_Y = 100
  
@@ -24,6 +24,7 @@ class ClosecallWindow(arcade.Window):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
         self.block_sprite = arcade.Sprite('images/block.png')
+        #self.background = arcade.load_texture("images/background.jpg") Not working
         self.world = World(width, height)
 
     def on_draw(self):
