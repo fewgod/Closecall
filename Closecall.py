@@ -1,5 +1,5 @@
 import arcade
- 
+from models import World
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 800
 Player_Line_X = 300
@@ -23,21 +23,16 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
-        self.line_sprite.set_position(Player_Line_X,Player_Line_Y) #set deathline position
-        self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
-        self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
-        self.Lane_line_sprite.set_position(200,450) #set laneline position
-        self.Lane_line2_sprite.set_position(400,450)
+        self.world = World(width, height)
+
     def on_draw(self):
         arcade.start_render()
-        self.line_sprite.draw()
-        self.Lane_line_sprite.draw()
-        self.Lane_line2_sprite.draw()
+    
+    def update(self, delta):
+        self.world.update(delta)
 
 def main():
     window = ClosecallWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
-    arcade.set_window(window)
     arcade.run()
  
 if __name__ == '__main__':
