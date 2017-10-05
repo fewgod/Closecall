@@ -2,7 +2,13 @@ import arcade
 Player_Line_X = 300
 Player_Line_Y = 100
 
-
+class Block:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+ 
+    def update(self, delta):
+        self.y -= 5
 
 
 class World:
@@ -15,9 +21,12 @@ class World:
         self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
         self.Lane_line_sprite.set_position(200,450) #set laneline position
         self.Lane_line2_sprite.set_position(400,450)
+
+        self.block = Block(100, 500)
  
  
-    def update(self):
+    def update(self,delta):
         self.line_sprite.draw()
         self.Lane_line_sprite.draw()
         self.Lane_line2_sprite.draw()
+        self.block.update(delta)
