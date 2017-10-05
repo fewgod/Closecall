@@ -27,6 +27,9 @@ class ClosecallWindow(arcade.Window):
         #self.background = arcade.load_texture("images/background.jpg") Not working
         self.world = World(width, height)
 
+    def on_key_press(self, key, key_modifiers):
+        self.world.on_key_press(key, key_modifiers)
+        
     def on_draw(self):
         arcade.start_render()
         self.block_sprite.draw()
