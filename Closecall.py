@@ -2,6 +2,8 @@ import arcade
  
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 800
+Player_Line_X = 300
+Player_Line_Y = 100
  
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
@@ -22,7 +24,7 @@ class ClosecallWindow(arcade.Window):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
         self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
-        self.line_sprite.set_position(300,100) #set deathline position
+        self.line_sprite.set_position(Player_Line_X,Player_Line_Y) #set deathline position
         self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
         self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
         self.Lane_line_sprite.set_position(200,450) #set laneline position
