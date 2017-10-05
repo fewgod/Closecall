@@ -21,12 +21,17 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        self.line_sprite = arcade.Sprite('images/line.png')
-        self.line_sprite.set_position(300,100)
-
+        self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
+        self.line_sprite.set_position(300,100) #set deathline position
+        self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
+        self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
+        self.Lane_line_sprite.set_position(200,450) #set laneline position
+        self.Lane_line2_sprite.set_position(400,450)
     def on_draw(self):
         arcade.start_render()
-        self.line_sprite.draw() 
+        self.line_sprite.draw()
+        self.Lane_line_sprite.draw()
+        self.Lane_line2_sprite.draw()
 
 def main():
     window = ClosecallWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
