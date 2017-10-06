@@ -1,4 +1,5 @@
 import arcade
+from random import randint
 from models import World,Block
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 780
@@ -23,13 +24,13 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        self.block_sprite = arcade.Sprite('images/block.png')
         #self.background = arcade.load_texture("images/background.jpg") หาทางใส่bg
         self.world = World(width, height)
         self.score = 0
+        self.combo = 0
 
         self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
-        self.line_sprite.set_position(300,100) #set deathline position
+        self.line_sprite.set_position(Player_Line_X,Player_Line_Y) #set deathline position
         self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
         self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
         self.Lane_line_sprite.set_position(200,450) #set laneline position
@@ -40,18 +41,29 @@ class ClosecallWindow(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        self.block_sprite.draw()
+        '''Score Board'''
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
         arcade.render_text(self.score_text, 10, 20)
+        output_gain = f"+ {self.world.gain_score}" #ทำป้ายคะแนนที่ได้จากปุ่มนั้น
+        self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
+        arcade.render_text(self.score_gain_text, 150, 20)
+        output_combo = f"Combo {self.world.combo} !" #ขึ้นคำว่าCombo +จำนวนcombo หากกดได้คะแนน>=ที่ตั้งไว้
+        self.combo_text = arcade.create_text(output_combo, arcade.color.BLACK, 16)
+        arcade.render_text(self.combo_text, 250, 65)
 
         self.line_sprite.draw() #ใส่ฉากหลังแบบไม่ใช่bg
         self.Lane_line_sprite.draw()
         self.Lane_line2_sprite.draw()
+        for block in self.world.block_list1:
+            block.draw()
+        for block in self.world.block_list2:
+            block.draw()
+        for block in self.world.block_list3:
+            block.draw()
     
     def update(self, delta):
         self.world.update(delta)
-        self.block_sprite.set_position(self.world.block.x, self.world.block.y)
 
 def main():
     window = ClosecallWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
