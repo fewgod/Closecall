@@ -30,28 +30,25 @@ class World:
         self.block_list3 = []
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.A:
-            if(round(780 -self.block.center_y)>=520): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+            if(round(780 -self.block_list1[0].center_y)>=570): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
                 self.score += 200
             else:
-                self.score += round((780 -self.block.center_y) *0.13)   
-            for block in self.block_list1:
-                self.block_list1.remove(block)
+                self.score += round((780 -self.block_list1[0].center_y) *0.13)   
+            del self.block_list1[0] #ลบข้อมูลตัวแรกในblock_list1 ซึ่งก็คือตัวที่ใกล้เส้นมากที่สุด
         
         if key == arcade.key.S:
-            if(round(780 -self.block.center_y)>=420): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+            if(round(780 -self.block_list2[0].center_y)>=570):
                 self.score += 200
             else:
-                self.score += round((780 -self.block.center_y) *0.13)   
-            for block in self.block_list2:
-                self.block_list2.remove(block)
+                self.score += round((780 -self.block_list2[0].center_y) *0.13)   
+            del self.block_list2[0]
 
         if key == arcade.key.D:
-            if(round(780 -self.block.center_y)>=520): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+            if(round(780 -self.block_list3[0].center_y)>=570):
                 self.score += 200
             else:
-                self.score += round((780 -self.block.center_y) *0.13)   
-            for block in self.block_list3:
-                self.block_list3.remove(block)
+                self.score += round((780 -self.block_list3[0].center_y) *0.13)   
+            del self.block_list3[0]
 
     def update(self,delta):
         #self.block.update(delta)
