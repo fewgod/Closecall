@@ -6,6 +6,9 @@ LANE1_X = 100
 LANE2_X = 300
 LANE3_X = 500
 LANE_Y = 750
+LANE1_WAITTIME = 0
+LANE2_WAITTIME = 0
+LANE3_WAITTIME = 0
 BLOCK_SCALE = 1
 PERFECT_Y = 75 #distance when press for perfect score
 GAME_OVER = False
@@ -54,7 +57,7 @@ class World:
         if(randint(1,100)<4):
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1):
-                self.block = Block('images/block.png', BLOCK_SCALE)
+                self.block = Block('images/block.png', BLOCK_SCALE) # Block scale คือเอาขนาดภาพเท่าไหร่เทียบกับขนาดoriginal 1=100%
                 self.block.setup(LANE1_X, LANE_Y) #สร้างblock
                 self.block_list1.append(self.block) #add blockเข้าไปในlist block_list1
             if(Spawn_Lane == 2):
