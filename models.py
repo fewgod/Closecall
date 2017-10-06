@@ -8,6 +8,8 @@ LANE2_X = 300
 LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
+PERFECT_Y = 595 #distance when press for perfect score
+GAME_OVER = False
 class Block(arcade.Sprite):
     def setup(self, x, y):
         self.center_x = x
@@ -15,8 +17,6 @@ class Block(arcade.Sprite):
  
     def update(self, delta):
         self.center_y -= 5
-        #if(self.y<100):
-            #insert game over function
 
 
 class World:
@@ -30,21 +30,21 @@ class World:
         self.block_list3 = []
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.A:
-            if(round(780 -self.block_list1[0].center_y)>=570): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+            if(round(780 -self.block_list1[0].center_y)>= PERFECT_Y): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
                 self.score += 200
             else:
                 self.score += round((780 -self.block_list1[0].center_y) *0.13)   
             del self.block_list1[0] #ลบข้อมูลตัวแรกในblock_list1 ซึ่งก็คือตัวที่ใกล้เส้นมากที่สุด
         
         if key == arcade.key.S:
-            if(round(780 -self.block_list2[0].center_y)>=570):
+            if(round(780 -self.block_list2[0].center_y)>= PERFECT_Y):
                 self.score += 200
             else:
                 self.score += round((780 -self.block_list2[0].center_y) *0.13)   
             del self.block_list2[0]
 
         if key == arcade.key.D:
-            if(round(780 -self.block_list3[0].center_y)>=570):
+            if(round(780 -self.block_list3[0].center_y)>= PERFECT_Y):
                 self.score += 200
             else:
                 self.score += round((780 -self.block_list3[0].center_y) *0.13)   
