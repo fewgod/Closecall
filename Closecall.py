@@ -1,4 +1,5 @@
 import arcade
+from random import randint
 from models import World,Block
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 780
@@ -44,14 +45,14 @@ class ClosecallWindow(arcade.Window):
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
         arcade.render_text(self.score_text, 10, 20)
-
         self.line_sprite.draw() #ใส่ฉากหลังแบบไม่ใช่bg
         self.Lane_line_sprite.draw()
         self.Lane_line2_sprite.draw()
+        for block in self.world.block_list:
+            block.draw()
     
     def update(self, delta):
         self.world.update(delta)
-        self.block_sprite.set_position(self.world.block.x, self.world.block.y)
 
 def main():
     window = ClosecallWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
