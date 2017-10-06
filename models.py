@@ -48,3 +48,5 @@ class World:
                 self.block = Block('images/block.png', BLOCK_SCALE)
                 self.block.setup(500, 700)
                 self.block_list.append(self.block)
+        for block in self.block_list:
+            block.update(delta)
