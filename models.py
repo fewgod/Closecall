@@ -38,7 +38,7 @@ class World:
                 self.block_list1.remove(block)
         
         if key == arcade.key.S:
-            if(round(780 -self.block.center_y)>=520): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+            if(round(780 -self.block.center_y)>=420): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
                 self.score += 200
             else:
                 self.score += round((780 -self.block.center_y) *0.13)   
@@ -72,8 +72,12 @@ class World:
         for block in self.block_list1:
             block.update(delta)
             if(block.center_y<130):
-                self.block_list1.remove(block)
+                self.block_list1.remove(block) #blockของlane1เลยขอบแล้วจะลบblockนั้นออก
         for block in self.block_list2:
             block.update(delta)
+            if(block.center_y<130):
+                self.block_list2.remove(block)
         for block in self.block_list3:
             block.update(delta)
+            if(block.center_y<130):
+                self.block_list3.remove(block)
