@@ -48,7 +48,11 @@ class ClosecallWindow(arcade.Window):
         self.line_sprite.draw() #ใส่ฉากหลังแบบไม่ใช่bg
         self.Lane_line_sprite.draw()
         self.Lane_line2_sprite.draw()
-        for block in self.world.block_list:
+        for block in self.world.block_list1:
+            block.draw()
+        for block in self.world.block_list2:
+            block.draw()
+        for block in self.world.block_list3:
             block.draw()
     
     def update(self, delta):

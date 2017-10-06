@@ -13,7 +13,7 @@ class Block(arcade.Sprite):
         self.center_y -= 5
         #if(self.y<100):
             #insert game over function
-        if(self.center_y<200): #ตอนนี้ทำแค่เลยเส้นแล้วขึ้นไปบนใหม่
+        if(self.center_y<130): #ตอนนี้ทำแค่เลยเส้นแล้วขึ้นไปบนใหม่
             self.center_y = 700
 
 
@@ -23,14 +23,33 @@ class World:
         self.height = height
         self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
         self.score = 0 #Initial Score = 0
-        self.block_list = []
+        self.block_list1 = [] #สร้างlist ไว้เก็บบล็อคที่อยู่ในเลน 1,2,3ตามลำดับ
+        self.block_list2 = []
+        self.block_list3 = []
     def on_key_press(self, key, key_modifiers):
-        if key == arcade.key.SPACE:
-            if(round(780 -self.block.center_y)>=550): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+        if key == arcade.key.A:
+            if(round(780 -self.block.center_y)>=520): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
                 self.score += 200
             else:
-                self.score += round((780 -self.block.center_y) *0.13)
-    #def randomlane(self): #หาทางใส่ฟังก์ชั่นสุ่มสร้างบล็อคมาเรื่อยๆ
+                self.score += round((780 -self.block.center_y) *0.13)   
+            for block in self.block_list1:
+                self.block_list1.remove(block)
+        
+        if key == arcade.key.S:
+            if(round(780 -self.block.center_y)>=520): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+                self.score += 200
+            else:
+                self.score += round((780 -self.block.center_y) *0.13)   
+            for block in self.block_list2:
+                self.block_list2.remove(block)
+
+        if key == arcade.key.D:
+            if(round(780 -self.block.center_y)>=520): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
+                self.score += 200
+            else:
+                self.score += round((780 -self.block.center_y) *0.13)   
+            for block in self.block_list3:
+                self.block_list3.remove(block)
 
     def update(self,delta):
         #self.block.update(delta)
@@ -38,15 +57,19 @@ class World:
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1):
                 self.block = Block('images/block.png', BLOCK_SCALE)
-                self.block.setup(100, 700)
-                self.block_list.append(self.block)
+                self.block.setup(100, 700) #สร้างblock
+                self.block_list1.append(self.block) #add blockเข้าไปในlist block_list1
             if(Spawn_Lane == 2):
                 self.block = Block('images/block.png', BLOCK_SCALE)
                 self.block.setup(300, 700)
-                self.block_list.append(self.block)
+                self.block_list2.append(self.block)
             if(Spawn_Lane == 3):
                 self.block = Block('images/block.png', BLOCK_SCALE)
                 self.block.setup(500, 700)
-                self.block_list.append(self.block)
-        for block in self.block_list:
+                self.block_list3.append(self.block)
+        for block in self.block_list1:
+            block.update(delta)
+        for block in self.block_list2:
+            block.update(delta)
+        for block in self.block_list3:
             block.update(delta)
