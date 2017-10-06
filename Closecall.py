@@ -29,7 +29,7 @@ class ClosecallWindow(arcade.Window):
         self.score = 0
 
         self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
-        self.line_sprite.set_position(300,100) #set deathline position
+        self.line_sprite.set_position(Player_Line_X,Player_Line_Y) #set deathline position
         self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
         self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
         self.Lane_line_sprite.set_position(200,450) #set laneline position
@@ -40,9 +40,14 @@ class ClosecallWindow(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
+        
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
         arcade.render_text(self.score_text, 10, 20)
+        output_gain = f"+ {self.world.gain_score}" #ทำป้ายคะแนนที่ได้จากปุ่มนั้น
+        self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
+        arcade.render_text(self.score_gain_text, 150, 20)
+
         self.line_sprite.draw() #ใส่ฉากหลังแบบไม่ใช่bg
         self.Lane_line_sprite.draw()
         self.Lane_line2_sprite.draw()

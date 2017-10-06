@@ -27,30 +27,40 @@ class World:
         self.block_list1 = [] #สร้างlist ไว้เก็บบล็อคที่อยู่ในเลน 1,2,3ตามลำดับ
         self.block_list2 = []
         self.block_list3 = []
-        self.Lane1_Waittime = 0
+        self.Lane1_Waittime = 0 #init Lane Waittime
         self.Lane2_Waittime = 0
         self.Lane3_Waittime = 0
+        self.gain_score = 0
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.A:
             if(round(self.block_list1[0].center_y - PLAYER_LINE_X)<= PERFECT_Y): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
-                self.score += 200
+                self.gain_score = 200
+                self.score += self.gain_score
             else:
-                self.score += round((780 -self.block_list1[0].center_y) *0.13)   
+                self.gain_score = round((780 -self.block_list1[0].center_y) *0.13)
+                self.score += self.gain_score
             del self.block_list1[0] #ลบข้อมูลตัวแรกในblock_list1 ซึ่งก็คือตัวที่ใกล้เส้นมากที่สุด
         
         if key == arcade.key.S:
             if(round(self.block_list2[0].center_y - PLAYER_LINE_X)<= PERFECT_Y):
-                self.score += 200
+                self.gain_score = 200
+                self.score += self.gain_score
             else:
-                self.score += round((780 -self.block_list2[0].center_y) *0.13)   
+                self.gain_score = round((780 -self.block_list2[0].center_y) *0.13)
+                self.score += self.gain_score
             del self.block_list2[0]
 
         if key == arcade.key.D:
             if(round(self.block_list3[0].center_y - PLAYER_LINE_X)<= PERFECT_Y):
-                self.score += 200
+                self.gain_score = 200
+                self.score += self.gain_score
             else:
-                self.score += round((780 -self.block_list3[0].center_y) *0.13)   
+                self.gain_score = round((780 -self.block_list3[0].center_y) *0.13)
+                self.score += self.gain_score   
             del self.block_list3[0]
+        output_gain = f"+ {self.gain_score}" #ทำป้ายคะแนน
+        self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
+        arcade.render_text(self.score_gain_text, 20, 20)
 
     def update(self,delta):
         #self.block.update(delta)
