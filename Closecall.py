@@ -24,7 +24,6 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        self.block_sprite = arcade.Sprite('images/block.png')
         #self.background = arcade.load_texture("images/background.jpg") หาทางใส่bg
         self.world = World(width, height)
         self.score = 0
@@ -41,7 +40,6 @@ class ClosecallWindow(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        self.block_sprite.draw()
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
         arcade.render_text(self.score_text, 10, 20)

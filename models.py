@@ -3,6 +3,10 @@ import arcade.key
 from random import randint
 Player_Line_X = 300
 Player_Line_Y = 100
+LANE1_X = 100
+LANE2_X = 300
+LANE3_X = 500
+LANE_Y = 750
 BLOCK_SCALE = 1
 class Block(arcade.Sprite):
     def setup(self, x, y):
@@ -13,8 +17,6 @@ class Block(arcade.Sprite):
         self.center_y -= 5
         #if(self.y<100):
             #insert game over function
-        if(self.center_y<130): #ตอนนี้ทำแค่เลยเส้นแล้วขึ้นไปบนใหม่
-            self.center_y = 700
 
 
 class World:
@@ -57,18 +59,20 @@ class World:
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1):
                 self.block = Block('images/block.png', BLOCK_SCALE)
-                self.block.setup(100, 700) #สร้างblock
+                self.block.setup(LANE1_X, LANE_Y) #สร้างblock
                 self.block_list1.append(self.block) #add blockเข้าไปในlist block_list1
             if(Spawn_Lane == 2):
                 self.block = Block('images/block.png', BLOCK_SCALE)
-                self.block.setup(300, 700)
+                self.block.setup(LANE2_X, LANE_Y)
                 self.block_list2.append(self.block)
             if(Spawn_Lane == 3):
                 self.block = Block('images/block.png', BLOCK_SCALE)
-                self.block.setup(500, 700)
+                self.block.setup(LANE3_X, LANE_Y)
                 self.block_list3.append(self.block)
         for block in self.block_list1:
             block.update(delta)
+            if(block.center_y<130):
+                self.block_list1.remove(block)
         for block in self.block_list2:
             block.update(delta)
         for block in self.block_list3:
