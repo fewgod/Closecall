@@ -2,21 +2,22 @@ import arcade
 import arcade.key
 from random import randint
 PLAYER_LINE_X = 100
-LANE1_X = 100
+LANE1_X = 100 #center_x of lane1,2,3
 LANE2_X = 300
 LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 50 #distance when press for perfect score
 MISS_COMBO_SCORE = 55 #If score less than 55 will reset combo count
-GAME_OVER = False
+GAME_OVER = False # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
 class Block(arcade.Sprite):
     def setup(self, x, y):
         self.center_x = x
         self.center_y = y
  
     def update(self, delta):
-        self.center_y -= 5
+        if(GAME_OVER == False):
+            self.center_y -= 5
 
 
 class World:
@@ -31,9 +32,9 @@ class World:
         self.Lane1_Waittime = 0 #init Lane Waittime
         self.Lane2_Waittime = 0
         self.Lane3_Waittime = 0
-        self.gain_score = 0
+        self.gain_score = 0 #เอาไว้แสดงคะแนนที่ได้
         self.combo = 0
-        self.multiplier = 1
+        self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.A:
             if(round(self.block_list1[0].center_y - PLAYER_LINE_X)<= PERFECT_Y): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
@@ -41,7 +42,7 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
             else:
-                self.gain_score = round((780 -self.block_list1[0].center_y + self.multiplier*self.combo) *0.13)
+                self.gain_score = round((780 -self.block_list1[0].center_y + (self.multiplier*self.combo)) *0.13)
                 if(self.gain_score <= MISS_COMBO_SCORE): #If score less than 55 will reset combo count
                     self.combo = 0
                 self.score += self.gain_score
@@ -54,7 +55,7 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
             else:
-                self.gain_score = round((780 -self.block_list2[0].center_y + self.multiplier*self.combo) *0.13)
+                self.gain_score = round((780 -self.block_list2[0].center_y + (self.multiplier*self.combo)) *0.13)
                 if(self.gain_score <= MISS_COMBO_SCORE):
                     self.combo = 0
                 self.score += self.gain_score
@@ -67,7 +68,7 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
             else:
-                self.gain_score = round((780 -self.block_list3[0].center_y + self.multiplier*self.combo) *0.13)
+                self.gain_score = round((780 -self.block_list3[0].center_y + (self.multiplier*self.combo)) *0.13)
                 if(self.gain_score <= MISS_COMBO_SCORE):
                     self.combo = 0
                 self.score += self.gain_score 
@@ -79,13 +80,17 @@ class World:
 
     def update(self,delta):
         #self.block.update(delta)
-        if(self.combo>10 & self.combo <= 20):
+        if(self.combo>10 and self.combo <= 20):
             self.multiplier = 1.15
         elif(self.combo <= 50):
             self.multiplier = 1.25
-        elif(self.combo <= 100):
+        elif(self.combo <= 80):
+            self.multiplier = 1.35
+        elif(self.combo < 100):
             self.multiplier = 1.5
-        if(randint(1,100)<5):
+        elif(self.combo >= 100):
+            self.multiplier = 1.75
+        if(randint(1,100)<5 and GAME_OVER == False):
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1 and self.Lane1_Waittime <5):
                 self.block = Block('images/block.png', BLOCK_SCALE) # Block scale คือเอาขนาดภาพเท่าไหร่เทียบกับขนาดoriginal 1=100%
