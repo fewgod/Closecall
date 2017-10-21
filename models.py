@@ -33,10 +33,11 @@ class World:
         self.Lane3_Waittime = 0
         self.gain_score = 0
         self.combo = 0
+        self.multiplier = 1
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.A:
             if(round(self.block_list1[0].center_y - PLAYER_LINE_X)<= PERFECT_Y): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
-                self.gain_score = 200
+                self.gain_score = 200 + self.multiplier
                 self.score += self.gain_score
                 self.combo += 1
             else:
@@ -49,7 +50,7 @@ class World:
         
         if key == arcade.key.S:
             if(round(self.block_list2[0].center_y - PLAYER_LINE_X)<= PERFECT_Y):
-                self.gain_score = 200
+                self.gain_score = 200 + self.multiplier*self.combo
                 self.score += self.gain_score
                 self.combo += 1
             else:
@@ -78,6 +79,8 @@ class World:
 
     def update(self,delta):
         #self.block.update(delta)
+        if(self.combo>20 & self.combo <= 50):
+            self.multiplier = 1.15
         if(randint(1,100)<5):
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1 and self.Lane1_Waittime <5):
