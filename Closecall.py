@@ -5,7 +5,7 @@ SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 780
 Player_Line_X = 300
 Player_Line_Y = 100
- 
+ #Editor note: Still unable to set background image with arcade.load.texture--- need to find another way around
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
@@ -24,23 +24,19 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        #self.background = arcade.load_texture("images/background.jpg") หาทางใส่bg
+        self.background = arcade.load_texture("images/background.jpg") #ใส่bg
         self.world = World(width, height)
         self.score = 0
         self.combo = 0
-
-        self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
-        self.line_sprite.set_position(Player_Line_X,Player_Line_Y) #set deathline position
-        self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
-        self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
-        self.Lane_line_sprite.set_position(200,450) #set laneline position
-        self.Lane_line2_sprite.set_position(400,450)
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
 
     def on_draw(self):
         arcade.start_render()
+        '''draw bg''' #draw background before scoreboard otherwise you cannot see the scoreboard(will bring bg to the front of scoreboard)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
+                                      SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
         '''Score Board'''
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
@@ -52,9 +48,7 @@ class ClosecallWindow(arcade.Window):
         self.combo_text = arcade.create_text(output_combo, arcade.color.BLACK, 16)
         arcade.render_text(self.combo_text, 250, 65)
 
-        self.line_sprite.draw() #ใส่ฉากหลังแบบไม่ใช่bg
-        self.Lane_line_sprite.draw()
-        self.Lane_line2_sprite.draw()
+        ''' draw block in each lane'''
         for block in self.world.block_list1:
             block.draw()
         for block in self.world.block_list2:
