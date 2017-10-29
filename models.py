@@ -10,6 +10,9 @@ BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
 UPPER_PRESS_AREA = 160
 LOWER_PRESS_AREA = 100 # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
+INSTRUCTION_STATE = 0
+GAME_RUNNING_STATE = 1
+GAME_OVER_STATE = 2
 
 class Block(arcade.Sprite):
     def setup(self, x, y):
@@ -35,8 +38,9 @@ class World:
         self.gain_score = 0 #เอาไว้แสดงคะแนนที่ได้
         self.combo = 0
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
+        self.current_state = GAME_OVER_STATE #GAME_RUNNING_STATE #set up the current state
     def on_key_press(self, key, key_modifiers):
-        if key == arcade.key.A:
+        if (key == arcade.key.A and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
                 self.score += self.gain_score
@@ -52,7 +56,7 @@ class World:
                 self.score += self.gain_score
                 self.combo = 0 #reset combo if press outside PRESS_AREA
         
-        if key == arcade.key.S:
+        if (key == arcade.key.S and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo)
                 self.score += self.gain_score
@@ -68,7 +72,7 @@ class World:
                 self.score += self.gain_score
                 self.combo = 0
 
-        if key == arcade.key.D:
+        if (key == arcade.key.D and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo)
                 self.score += self.gain_score
