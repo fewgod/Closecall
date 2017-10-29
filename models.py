@@ -127,19 +127,16 @@ class World:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
             if(block.center_y<115):
-                self.block_list1.remove(block)
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list2:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
             if(block.center_y<115):
-                self.block_list2.remove(block)
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list3:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
             if(block.center_y<115):
-                self.block_list3.remove(block)
                 self.current_state = GAME_OVER_STATE
         self.Lane1_Waittime -=1 #ทุกครั้งที่updateจะลบLane_Waittime1-3 ไป1เฟรม
         self.Lane2_Waittime -=1
