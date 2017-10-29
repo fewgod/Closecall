@@ -8,7 +8,7 @@ LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
-UPPER_PRESS_AREA = 160
+UPPER_PRESS_AREA = 160 +2 #upper area in image is at 160 but add additional for 10 to lower the difficulty
 LOWER_PRESS_AREA = 100 # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
@@ -20,7 +20,8 @@ class Block(arcade.Sprite):
         self.center_y = y
  
     def update(self, delta):
-        self.center_y -= 5
+        #if self.current_state == GAME_RUNNING_STATE:
+            self.center_y -= 5
 
 
 class World:
@@ -104,7 +105,7 @@ class World:
             self.multiplier = 1.5
         elif(self.combo >= 100):
             self.multiplier = 1.75
-        if(randint(1,100)<5):
+        if(randint(1,100)<5 and self.current_state == GAME_RUNNING_STATE):
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1 and self.Lane1_Waittime <5):
                 self.block = Block('images/block.png', BLOCK_SCALE) # Block scale คือเอาขนาดภาพเท่าไหร่เทียบกับขนาดoriginal 1=100%
@@ -123,17 +124,20 @@ class World:
                 self.Lane3_Waittime = 20
         
         for block in self.block_list1:
-            block.update(delta)
+            if self.current_state == GAME_RUNNING_STATE:
+                block.update(delta)
             if(block.center_y<115):
                 self.block_list1.remove(block)
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list2:
-            block.update(delta)
+            if self.current_state == GAME_RUNNING_STATE:
+                block.update(delta)
             if(block.center_y<115):
                 self.block_list2.remove(block)
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list3:
-            block.update(delta)
+            if self.current_state == GAME_RUNNING_STATE:
+                block.update(delta)
             if(block.center_y<115):
                 self.block_list3.remove(block)
                 self.current_state = GAME_OVER_STATE
