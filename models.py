@@ -9,7 +9,7 @@ LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
 UPPER_PRESS_AREA = 160 +3 #upper area in image is at 160 but add additional for 10 to lower the difficulty
-LOWER_PRESS_AREA = 100 # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
+LOWER_PRESS_AREA = 100+5 #+5 จะได้ใช้ประโยชน์จากขอบมากขึ้น
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
 GAME_OVER_STATE = 2
@@ -39,10 +39,16 @@ class World:
         self.gain_score = 0 #เอาไว้แสดงคะแนนที่ได้
         self.combo = 0
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
-        self.current_state = GAME_RUNNING_STATE #set up the current state
+        self.current_state = INSTRUCTION_STATE #set up the current state
+
+        self.instruction_sprite = arcade.Sprite('images/block_green.png')#show instruction when start game TEST image only
+        self.instruction_sprite.set_position(300,450)
 
     '''Button'''
     def on_key_press(self, key, key_modifiers):
+        if (key == arcade.key.S and self.current_state == INSTRUCTION_STATE):
+            #self.instruction_sprite = arcade.Sprite('') #make instruction image dissapear when press enter button
+            self.current_state = GAME_RUNNING_STATE
         if (key == arcade.key.A and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
@@ -97,13 +103,13 @@ class World:
 
     def update(self,delta):
         '''combo modifier'''
-        if(self.combo>10 and self.combo <= 20):
+        if(self.combo>8 and self.combo <= 15):
             self.multiplier = 1.15
-        elif(self.combo <= 50):
+        elif(self.combo <= 25):
             self.multiplier = 1.25
-        elif(self.combo <= 80):
+        elif(self.combo <= 45):
             self.multiplier = 1.35
-        elif(self.combo < 100):
+        elif(self.combo < 70):
             self.multiplier = 1.5
         elif(self.combo >= 100):
             self.multiplier = 1.75

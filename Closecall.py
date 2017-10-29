@@ -6,6 +6,9 @@ SCREEN_HEIGHT = 780
 Player_Line_X = 300 
 Player_Line_Y = 100 # Death line X position
 Press_Area_Y = 135 #center of press space area
+INSTRUCTION_STATE = 0
+GAME_RUNNING_STATE = 1
+GAME_OVER_STATE = 2
  #Editor note: Want to add instruction image, restart game function and lastly sfx when press and bgm
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
@@ -62,6 +65,10 @@ class ClosecallWindow(arcade.Window):
                 arcade.render_text(self.perfect_combo_text, 250, 65)
             else:
                 arcade.render_text(self.combo_text, 250, 65)
+
+        '''draw instruction page'''
+        if self.world.current_state == INSTRUCTION_STATE:
+            self.world.instruction_sprite.draw()
 
         ''' draw block in each lane'''
         for block in self.world.block_list1:
