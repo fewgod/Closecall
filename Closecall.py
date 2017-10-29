@@ -49,7 +49,8 @@ class ClosecallWindow(arcade.Window):
         arcade.render_text(self.score_gain_text, 150, 20)
         output_combo = f"Combo {self.world.combo} !" #ขึ้นคำว่าCombo +จำนวนcombo หากกดได้คะแนน>=ที่ตั้งไว้
         self.combo_text = arcade.create_text(output_combo, arcade.color.BLACK, 16)
-        arcade.render_text(self.combo_text, 250, 65)
+        if self.world.combo >=3:
+            arcade.render_text(self.combo_text, 250, 65)
 
         ''' draw block in each lane'''
         
