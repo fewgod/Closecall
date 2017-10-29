@@ -44,7 +44,7 @@ class ClosecallWindow(arcade.Window):
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
         arcade.render_text(self.score_text, 10, 20)
-        output_gain = f"+ {self.world.gain_score}" #ทำป้ายคะแนนที่ได้จากปุ่มนั้น
+        output_gain = f" {self.world.gain_score}" #ทำป้ายคะแนนที่ได้จากปุ่มนั้น
         self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
         arcade.render_text(self.score_gain_text, 150, 20)
         output_combo = f"Combo {self.world.combo} !" #ขึ้นคำว่าCombo +จำนวนcombo หากกดได้คะแนน>=ที่ตั้งไว้

@@ -8,10 +8,10 @@ LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
-MISS_COMBO_SCORE = 55 #If score less than 55 will reset combo count
-GAME_OVER = False # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
 UPPER_PRESS_AREA = 160
 LOWER_PRESS_AREA = 100
+GAME_OVER = False # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
+
 class Block(arcade.Sprite):
     def setup(self, x, y):
         self.center_x = x
@@ -39,17 +39,20 @@ class World:
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.A:
-            if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y): #ประมาณว่าถ้ากดใกล้เส้นตายมากๆจะได้คะแนนพิเศษ
-                self.gain_score = 200 + round(self.multiplier*self.combo)
+            if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+                self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
                 self.score += self.gain_score
                 self.combo += 1
-            else:
-                self.gain_score = round((780 -self.block_list1[0].center_y + (self.multiplier*self.combo)) *0.13)
-                if(self.gain_score <= MISS_COMBO_SCORE): #If score less than 55 will reset combo count
-                    self.combo = 0
+                del self.block_list1[0]
+            elif(self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
+                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.13))
                 self.score += self.gain_score
                 self.combo += 1
-            del self.block_list1[0] #ลบข้อมูลตัวแรกในblock_list1 ซึ่งก็คือตัวที่ใกล้เส้นมากที่สุด
+                del self.block_list1[0]
+            else: #When press outside PRESS AREA
+                self.gain_score = -50 #score deduction when press outside
+                self.score += self.gain_score
+                self.combo = 0 #reset combo if press outside PRESS_AREA
         
         if key == arcade.key.S:
             if(round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
@@ -62,23 +65,27 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list2[0]
-            else: #When press outside PRESS AREA
-                self.gain_score = -50 #score deduction when press outside
+            else:
+                self.gain_score = -50
                 self.score += self.gain_score
-                self.combo = 0 #reset combo if press outside PRESS_AREA
+                self.combo = 0
 
         if key == arcade.key.D:
             if(round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo)
                 self.score += self.gain_score
                 self.combo += 1
+                del self.block_list3[0]
+            elif(self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
+                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.13))
+                self.score += self.gain_score
+                self.combo += 1
+                del self.block_list3[0]
             else:
-                self.gain_score = round((780 -self.block_list3[0].center_y + (self.multiplier*self.combo)) *0.13)
-                if(self.gain_score <= MISS_COMBO_SCORE):
-                    self.combo = 0
-                self.score += self.gain_score 
-                self.combo += 1  
-            del self.block_list3[0]
+                self.gain_score = -50 
+                self.score += self.gain_score
+                self.combo = 0
+        
         output_gain = f"+ {self.gain_score}" #ทำป้ายคะแนน
         self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
         arcade.render_text(self.score_gain_text, 20, 20)
