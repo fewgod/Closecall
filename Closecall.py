@@ -25,17 +25,10 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        self.background = arcade.load_texture("images/background.jpg") #ใส่bg
+        self.background = arcade.load_texture("images/bgwithpressarea.jpg") #ใส่bg
         self.world = World(width, height)
         self.score = 0
         self.combo = 0
-
-        self.press_area_sprite = arcade.Sprite('images/press_area.png') #insert press area picture
-        self.press_area_sprite.set_position(Player_Line_X,Press_Area_Y) #set press area position
-        self.Lane_line_sprite = arcade.Sprite('images/laneline.png') #insert laneline picture
-        self.Lane_line2_sprite = arcade.Sprite('images/laneline.png')
-        self.Lane_line_sprite.set_position(200,450) #set laneline position
-        self.Lane_line2_sprite.set_position(400,450)
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
@@ -43,16 +36,11 @@ class ClosecallWindow(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         '''draw bg''' #draw background before scoreboard otherwise you cannot see the scoreboard(will bring bg to the front of scoreboard)
-        self.press_area_sprite.draw()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
                                       SCREEN_WIDTH, SCREEN_HEIGHT, self.background) #ทำไมต้อง // 2 มันคืออะไร??
 
-        self.press_area_sprite.draw()
-        self.Lane_line_sprite.draw()
-        self.Lane_line2_sprite.draw()
-
         '''Score Board'''
-        '''
+        
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
         arcade.render_text(self.score_text, 10, 20)
@@ -61,15 +49,17 @@ class ClosecallWindow(arcade.Window):
         arcade.render_text(self.score_gain_text, 150, 20)
         output_combo = f"Combo {self.world.combo} !" #ขึ้นคำว่าCombo +จำนวนcombo หากกดได้คะแนน>=ที่ตั้งไว้
         self.combo_text = arcade.create_text(output_combo, arcade.color.BLACK, 16)
-        arcade.render_text(self.combo_text, 250, 65)'''
+        arcade.render_text(self.combo_text, 250, 65)
 
         ''' draw block in each lane'''
+        
         for block in self.world.block_list1:
             block.draw()
         for block in self.world.block_list2:
             block.draw()
         for block in self.world.block_list3:
             block.draw()
+            
     
     def update(self, delta):
         self.world.update(delta)
