@@ -8,7 +8,7 @@ LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
-UPPER_PRESS_AREA = 160 +2 #upper area in image is at 160 but add additional for 10 to lower the difficulty
+UPPER_PRESS_AREA = 160 +3 #upper area in image is at 160 but add additional for 10 to lower the difficulty
 LOWER_PRESS_AREA = 100 # ลองเลยขอบแล้วเปลี่ยนค่าboolตัวนี้แล้วไม่เวิคขึ้นerror
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
@@ -40,6 +40,8 @@ class World:
         self.combo = 0
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
         self.current_state = GAME_RUNNING_STATE #set up the current state
+
+    '''Button'''
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.A and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
@@ -94,7 +96,7 @@ class World:
         arcade.render_text(self.score_gain_text, 20, 20)
 
     def update(self,delta):
-        #self.block.update(delta)
+        '''combo modifier'''
         if(self.combo>10 and self.combo <= 20):
             self.multiplier = 1.15
         elif(self.combo <= 50):
@@ -105,6 +107,8 @@ class World:
             self.multiplier = 1.5
         elif(self.combo >= 100):
             self.multiplier = 1.75
+        
+        '''spawn block'''
         if(randint(1,100)<5 and self.current_state == GAME_RUNNING_STATE):
             Spawn_Lane = randint(1,3)
             if(Spawn_Lane == 1 and self.Lane1_Waittime <5):
@@ -123,6 +127,7 @@ class World:
                 self.block_list3.append(self.block)
                 self.Lane3_Waittime = 20
         
+        '''Check if block past player line'''
         for block in self.block_list1:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
