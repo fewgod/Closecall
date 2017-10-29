@@ -6,7 +6,7 @@ SCREEN_HEIGHT = 780
 Player_Line_X = 300
 Player_Line_Y = 100
 Press_Area_Y = 135
- #Editor note: 
+ #Editor note: Failed to make game over fucntion
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
