@@ -38,7 +38,7 @@ class World:
         self.gain_score = 0 #เอาไว้แสดงคะแนนที่ได้
         self.combo = 0
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
-        self.current_state = GAME_OVER_STATE #GAME_RUNNING_STATE #set up the current state
+        self.current_state = GAME_RUNNING_STATE #set up the current state
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.A and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
@@ -126,14 +126,17 @@ class World:
             block.update(delta)
             if(block.center_y<115):
                 self.block_list1.remove(block)
+                self.current_state = GAME_OVER_STATE
         for block in self.block_list2:
             block.update(delta)
             if(block.center_y<115):
                 self.block_list2.remove(block)
+                self.current_state = GAME_OVER_STATE
         for block in self.block_list3:
             block.update(delta)
             if(block.center_y<115):
                 self.block_list3.remove(block)
+                self.current_state = GAME_OVER_STATE
         self.Lane1_Waittime -=1 #ทุกครั้งที่updateจะลบLane_Waittime1-3 ไป1เฟรม
         self.Lane2_Waittime -=1
         self.Lane3_Waittime -=1
