@@ -48,7 +48,7 @@ class World:
                 self.combo += 1
                 del self.block_list1[0]
             elif(self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
-                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.13))
+                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list1[0]
@@ -64,7 +64,7 @@ class World:
                 self.combo += 1
                 del self.block_list2[0]
             elif(self.block_list2[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
-                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.13))
+                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list2[0]
@@ -80,7 +80,7 @@ class World:
                 self.combo += 1
                 del self.block_list3[0]
             elif(self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
-                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.13))
+                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list3[0]

@@ -3,10 +3,10 @@ from random import randint
 from models import World,Block
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 780
-Player_Line_X = 300
-Player_Line_Y = 100
-Press_Area_Y = 135
- #Editor note: Failed to make game over fucntion
+Player_Line_X = 300 
+Player_Line_Y = 100 # Death line X position
+Press_Area_Y = 135 #center of press space area
+ #Editor note: Want to add instruction image, restart game function and lastly sfx when press and bgm
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
@@ -40,16 +40,21 @@ class ClosecallWindow(arcade.Window):
                                       SCREEN_WIDTH, SCREEN_HEIGHT, self.background) #ทำไมต้อง // 2 มันคืออะไร??
 
         '''Score Board'''
-        
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
         self.score_text = arcade.create_text(output, arcade.color.BLACK, 14)
-        arcade.render_text(self.score_text, 10, 20)
-        output_gain = f" {self.world.gain_score}" #ทำป้ายคะแนนที่ได้จากปุ่มนั้น
+        arcade.render_text(self.score_text, 10, 20) #วาดป้ายคะแนน
+        output_gain = f"+ {self.world.gain_score}" #ทำข้อความเวลาได้คะแนน
+        output_gain_minus = f" {self.world.gain_score}" #ทำข้อความเวลาได้คะแนนติดลบ
         self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
-        arcade.render_text(self.score_gain_text, 150, 20)
+        self.score_gain_minus_text = arcade.create_text(output_gain_minus, arcade.color.BLACK, 14)
+        if self.world.gain_score != 0:
+            if self.world.gain_score >0:
+                arcade.render_text(self.score_gain_text, 150, 20)
+            else:
+                arcade.render_text(self.score_gain_minus_text, 150, 20)
+
         output_combo = f"Combo {self.world.combo} !" #ขึ้นคำว่าCombo +จำนวนcombo หากกดอยู่ในช่วง
         output_perfect_combo = f"Perfect {self.world.combo} !" #ขึ้นคำว่าPerfectแทนคำว่าCombo +จำนวนcombo หากกดอยู่ในช่วงPerfect
-
         self.combo_text = arcade.create_text(output_combo, arcade.color.BLACK, 16)
         self.perfect_combo_text = arcade.create_text(output_perfect_combo, arcade.color.BLACK, 16)
         if self.world.combo >=3:
@@ -59,15 +64,13 @@ class ClosecallWindow(arcade.Window):
                 arcade.render_text(self.combo_text, 250, 65)
 
         ''' draw block in each lane'''
-        
         for block in self.world.block_list1:
             block.draw()
         for block in self.world.block_list2:
             block.draw()
         for block in self.world.block_list3:
             block.draw()
-            
-    
+        
     def update(self, delta):
         self.world.update(delta)
 
