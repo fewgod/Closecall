@@ -69,6 +69,8 @@ class ClosecallWindow(arcade.Window):
         '''draw instruction page'''
         if self.world.current_state == INSTRUCTION_STATE:
             self.world.instruction_sprite.draw()
+        if self.world.current_state == GAME_OVER_STATE:
+            self.world.gameover_sprite.draw()
 
         ''' draw block in each lane'''
         for block in self.world.block_list1:

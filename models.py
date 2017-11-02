@@ -28,7 +28,6 @@ class World:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.line_sprite = arcade.Sprite('images/line.png') #insert deathline picture
         self.score = 0 #Initial Score = 0
         self.block_list1 = [] #สร้างlist ไว้เก็บบล็อคที่อยู่ในเลน 1,2,3ตามลำดับ
         self.block_list2 = []
@@ -41,13 +40,14 @@ class World:
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
         self.current_state = INSTRUCTION_STATE #set up the current state
 
-        self.instruction_sprite = arcade.Sprite('images/block_green.png')#show instruction when start game TEST image only
-        self.instruction_sprite.set_position(300,450)
+        self.instruction_sprite = arcade.Sprite('images/instruction.png')#show instruction when start game
+        self.instruction_sprite.set_position(325,450)
+        self.gameover_sprite = arcade.Sprite('images/gameover.png')#show game over image when
+        self.gameover_sprite.set_position(325,450)
 
     '''Button'''
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.S and self.current_state == INSTRUCTION_STATE):
-            #self.instruction_sprite = arcade.Sprite('') #make instruction image dissapear when press enter button
             self.current_state = GAME_RUNNING_STATE
         if (key == arcade.key.A and self.current_state == GAME_RUNNING_STATE):
             if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
