@@ -8,8 +8,8 @@ LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
-UPPER_PRESS_AREA = 160 +3 #upper area in image is at 160 but add additional for 10 to lower the difficulty
-LOWER_PRESS_AREA = 100 #+5 จะได้ใช้ประโยชน์จากขอบมากขึ้น
+UPPER_PRESS_AREA = 163
+LOWER_PRESS_AREA = 115
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
 GAME_OVER_STATE = 2
@@ -112,7 +112,7 @@ class World:
         arcade.render_text(self.score_gain_text, 20, 20)
 
     def update(self,delta):
-        '''combo modifier'''
+        '''combo multiplier'''
         if(self.combo>8 and self.combo <= 15):
             self.multiplier = 1.15
         elif(self.combo <= 25):
@@ -145,20 +145,20 @@ class World:
         
         '''Check if block passed player line'''
         for block in self.block_list1:
-            #if self.current_state == GAME_RUNNING_STATE:
-            block.update(delta)
+            if self.current_state == GAME_RUNNING_STATE:
+                block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list2:
-            #if self.current_state == GAME_RUNNING_STATE:
-            block.update(delta)
+            if self.current_state == GAME_RUNNING_STATE:
+                block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list3:
-            #if self.current_state == GAME_RUNNING_STATE:
-            block.update(delta)
+            if self.current_state == GAME_RUNNING_STATE:
+                block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
-        self.Lane1_Waittime -=1 #ทุกครั้งที่updateจะลบLane_Waittime1-3 ไป1เฟรม
+        self.Lane1_Waittime -=1
         self.Lane2_Waittime -=1
         self.Lane3_Waittime -=1

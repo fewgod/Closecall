@@ -3,13 +3,10 @@ from random import randint
 from models import World,Block
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 780
-Player_Line_X = 300 
-Player_Line_Y = 100 # Death line X position
-Press_Area_Y = 135 #center of press space area
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
 GAME_OVER_STATE = 2
- #Editor note: Want to add instruction image, restart game function and lastly sfx when press and bgm
+
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
@@ -74,7 +71,7 @@ class ClosecallWindow(arcade.Window):
         for block in self.world.block_list3:
             block.draw()
 
-        '''draw instruction page'''
+        '''draw instruction and gameover page'''
         if self.world.current_state == INSTRUCTION_STATE:
             self.world.instruction_sprite.draw()
         if self.world.current_state == GAME_OVER_STATE:
