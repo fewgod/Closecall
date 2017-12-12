@@ -39,10 +39,12 @@ class World:
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
         self.current_state = INSTRUCTION_STATE #set up the current state
 
-        self.instruction_sprite = arcade.Sprite('images/instruction.png')#show instruction when start game
+        self.instruction_sprite = arcade.Sprite('assets/images/instruction.png')#show instruction when start game
         self.instruction_sprite.set_position(325,450)
-        self.gameover_sprite = arcade.Sprite('images/gameover.png')#show game over image when
+        self.gameover_sprite = arcade.Sprite('assets/images/gameover.png')#show game over image when
         self.gameover_sprite.set_position(295,450)
+        #self.hit_sfx = arcade.sound.load_sound('assets/sound/')
+        #arcade.sound.play_sound(self.hit_sfx)
 
     '''Button'''
     def on_key_press(self, key, key_modifiers):
