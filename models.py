@@ -38,6 +38,7 @@ class World:
         self.combo = 0
         self.multiplier = 1 #เอาไว้คูณกับcombo เวลาได้comboเยอะๆจะได้คะแนนยิ่งสูง
         self.current_state = INSTRUCTION_STATE #set up the current state
+        self.is_play_gameover_sound = 0
 
         self.instruction_sprite = arcade.Sprite('assets/images/instruction.png')#show instruction when start game
         self.instruction_sprite.set_position(325,450)
@@ -46,6 +47,8 @@ class World:
         self.hit_left_sfx = arcade.sound.load_sound('assets/sound/hit_block_left_lane.wav')
         self.hit_mid_sfx = arcade.sound.load_sound('assets/sound/hit_block_mid_lane.wav')
         self.hit_right_sfx = arcade.sound.load_sound('assets/sound/hit_block_right_lane.wav')
+        self.game_over_sfx = arcade.sound.load_sound('assets/sound/game_over.wav')
+
     '''Button'''
     def on_key_press(self, key, key_modifiers):
 
@@ -125,6 +128,7 @@ class World:
             self.combo = 0
             self.gain_score = 0
             self.score = 0
+            self.is_play_gameover_sound = 0
             self.block_list1 = []
             self.block_list2 = []
             self.block_list3 = []
@@ -172,16 +176,25 @@ class World:
                 block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
+                if(self.is_play_gameover_sound == 0):
+                    arcade.sound.play_sound(self.game_over_sfx)
+                    self.is_play_gameover_sound = 1
         for block in self.block_list2:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
+                if(self.is_play_gameover_sound == 0):
+                    arcade.sound.play_sound(self.game_over_sfx)
+                    self.is_play_gameover_sound = 1
         for block in self.block_list3:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
+                if(self.is_play_gameover_sound == 0):
+                    arcade.sound.play_sound(self.game_over_sfx)
+                    self.is_play_gameover_sound = 1
         self.Lane1_Waittime -=1
         self.Lane2_Waittime -=1
         self.Lane3_Waittime -=1
