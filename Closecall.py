@@ -40,7 +40,7 @@ class ClosecallWindow(arcade.Window):
         arcade.start_render()
         '''draw bg''' #draw background before scoreboard otherwise you cannot see the scoreboard(will bring bg to the front of scoreboard)
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
-                                      SCREEN_WIDTH, SCREEN_HEIGHT, self.background) #ทำไมต้อง // 2 มันคืออะไร??
+                                      SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
         '''Score Board'''
         output = f"Score: {self.world.score}" #ทำป้ายคะแนน
@@ -66,12 +66,6 @@ class ClosecallWindow(arcade.Window):
             else:
                 arcade.render_text(self.combo_text, 250, 65)
 
-        '''draw instruction page'''
-        if self.world.current_state == INSTRUCTION_STATE:
-            self.world.instruction_sprite.draw()
-        if self.world.current_state == GAME_OVER_STATE:
-            self.world.gameover_sprite.draw()
-
         ''' draw block in each lane'''
         for block in self.world.block_list1:
             block.draw()
@@ -79,6 +73,15 @@ class ClosecallWindow(arcade.Window):
             block.draw()
         for block in self.world.block_list3:
             block.draw()
+
+        '''draw instruction page'''
+        if self.world.current_state == INSTRUCTION_STATE:
+            self.world.instruction_sprite.draw()
+        if self.world.current_state == GAME_OVER_STATE:
+            self.world.gameover_sprite.draw()
+            final_score = f"You've score {self.world.score} pts"
+            self.total_score_text = arcade.create_text(final_score, arcade.color.BLACK, 15)
+            arcade.render_text(self.total_score_text, 215, 300)
         
     def update(self, delta):
         self.world.update(delta)

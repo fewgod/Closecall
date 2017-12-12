@@ -9,7 +9,7 @@ LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 33 #distance from player line when press for perfect score
 UPPER_PRESS_AREA = 160 +3 #upper area in image is at 160 but add additional for 10 to lower the difficulty
-LOWER_PRESS_AREA = 100+5 #+5 จะได้ใช้ประโยชน์จากขอบมากขึ้น
+LOWER_PRESS_AREA = 100 #+5 จะได้ใช้ประโยชน์จากขอบมากขึ้น
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
 GAME_OVER_STATE = 2
@@ -18,9 +18,8 @@ class Block(arcade.Sprite):
     def setup(self, x, y):
         self.center_x = x
         self.center_y = y
- 
+
     def update(self, delta):
-        #if self.current_state == GAME_RUNNING_STATE:
             self.center_y -= 5
 
 
@@ -43,19 +42,18 @@ class World:
         self.instruction_sprite = arcade.Sprite('images/instruction.png')#show instruction when start game
         self.instruction_sprite.set_position(325,450)
         self.gameover_sprite = arcade.Sprite('images/gameover.png')#show game over image when
-        self.gameover_sprite.set_position(325,450)
+        self.gameover_sprite.set_position(295,450)
 
     '''Button'''
     def on_key_press(self, key, key_modifiers):
-        if (key == arcade.key.S and self.current_state == INSTRUCTION_STATE):
-            self.current_state = GAME_RUNNING_STATE
-        if (key == arcade.key.A and self.current_state == GAME_RUNNING_STATE):
-            if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+
+        if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.A):
+            if(self.block_list1 and round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list1[0]
-            elif(self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
+            elif(self.block_list1 and self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
                 self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
@@ -65,13 +63,13 @@ class World:
                 self.score += self.gain_score
                 self.combo = 0 #reset combo if press outside PRESS_AREA
         
-        if (key == arcade.key.S and self.current_state == GAME_RUNNING_STATE):
-            if(round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+        if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.S):
+            if(self.block_list2 and round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo)
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list2[0]
-            elif(self.block_list2[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
+            elif(self.block_list2 and self.block_list2[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
                 self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
@@ -81,13 +79,13 @@ class World:
                 self.score += self.gain_score
                 self.combo = 0
 
-        if (key == arcade.key.D and self.current_state == GAME_RUNNING_STATE):
-            if(round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+        if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.D):
+            if(self.block_list3 and round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
                 self.gain_score = 200 + round(self.multiplier*self.combo)
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list3[0]
-            elif(self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
+            elif(self.block_list3 and self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
                 self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
@@ -96,6 +94,18 @@ class World:
                 self.gain_score = -50 
                 self.score += self.gain_score
                 self.combo = 0
+        
+        if (self.current_state == INSTRUCTION_STATE and key == arcade.key.S):
+            self.current_state = GAME_RUNNING_STATE
+
+        if (self.current_state == GAME_OVER_STATE and key == arcade.key.S):
+            self.combo = 0
+            self.gain_score = 0
+            self.score = 0
+            self.block_list1 = []
+            self.block_list2 = []
+            self.block_list3 = []
+            self.current_state = INSTRUCTION_STATE
         
         output_gain = f"+ {self.gain_score}" #ทำป้ายคะแนน
         self.score_gain_text = arcade.create_text(output_gain, arcade.color.BLACK, 14)
@@ -133,20 +143,20 @@ class World:
                 self.block_list3.append(self.block)
                 self.Lane3_Waittime = 20
         
-        '''Check if block past player line'''
+        '''Check if block passed player line'''
         for block in self.block_list1:
-            if self.current_state == GAME_RUNNING_STATE:
-                block.update(delta)
+            #if self.current_state == GAME_RUNNING_STATE:
+            block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list2:
-            if self.current_state == GAME_RUNNING_STATE:
-                block.update(delta)
+            #if self.current_state == GAME_RUNNING_STATE:
+            block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
         for block in self.block_list3:
-            if self.current_state == GAME_RUNNING_STATE:
-                block.update(delta)
+            #if self.current_state == GAME_RUNNING_STATE:
+            block.update(delta)
             if(block.center_y<115):
                 self.current_state = GAME_OVER_STATE
         self.Lane1_Waittime -=1 #ทุกครั้งที่updateจะลบLane_Waittime1-3 ไป1เฟรม
