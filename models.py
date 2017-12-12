@@ -8,8 +8,11 @@ LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
 PERFECT_Y = 35 #distance from player line when press for perfect score
+PERFECT_SCORE = 200
+MISSED_SCORE = -50
 UPPER_PRESS_AREA = 175
 LOWER_PRESS_AREA = 115
+LANE_SPAWN_WAITTIME = 20
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
 GAME_OVER_STATE = 2
@@ -55,7 +58,7 @@ class World:
         if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.A):
             if(self.block_list1):
                 if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
-                    self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
+                    self.gain_score = PERFECT_SCORE + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
                     self.score += self.gain_score
                     self.combo += 1
                     del self.block_list1[0]
@@ -67,18 +70,18 @@ class World:
                     del self.block_list1[0]
                     arcade.sound.play_sound(self.hit_left_sfx)
                 else: #When press outsize press area
-                    self.gain_score = -50 #score deduction when press outside
+                    self.gain_score = MISSED_SCORE #score deduction when press outside
                     self.score += self.gain_score
                     self.combo = 0 #reset combo if press outside PRESS_AREA
             else: #When press without any block in that lane
-                self.gain_score = -50 #score deduction when press without anyblock
+                self.gain_score = MISSED_SCORE #score deduction when press without anyblock
                 self.score += self.gain_score
                 self.combo = 0 #reset combo if press without anyblock
         
         if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.S):
             if(self.block_list2):
                 if(round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
-                    self.gain_score = 200 + round(self.multiplier*self.combo)
+                    self.gain_score = PERFECT_SCORE + round(self.multiplier*self.combo)
                     self.score += self.gain_score
                     self.combo += 1
                     del self.block_list2[0]
@@ -90,18 +93,18 @@ class World:
                     del self.block_list2[0]
                     arcade.sound.play_sound(self.hit_mid_sfx)
                 else:
-                    self.gain_score = -50 
+                    self.gain_score = MISSED_SCORE 
                     self.score += self.gain_score
                     self.combo = 0
             else:
-                self.gain_score = -50
+                self.gain_score = MISSED_SCORE
                 self.score += self.gain_score
                 self.combo = 0
 
         if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.D):
             if(self.block_list3):
                 if(round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
-                    self.gain_score = 200 + round(self.multiplier*self.combo)
+                    self.gain_score = PERFECT_SCORE + round(self.multiplier*self.combo)
                     self.score += self.gain_score
                     self.combo += 1
                     del self.block_list3[0]
@@ -113,14 +116,15 @@ class World:
                     del self.block_list3[0]
                     arcade.sound.play_sound(self.hit_right_sfx)
                 else:
-                    self.gain_score = -50 
+                    self.gain_score = MISSED_SCORE
                     self.score += self.gain_score
                     self.combo = 0
             else:
-                self.gain_score = -50 
+                self.gain_score = MISSED_SCORE
                 self.score += self.gain_score
                 self.combo = 0
         
+        '''chane game state'''
         if (self.current_state == INSTRUCTION_STATE and key == arcade.key.S):
             self.current_state = GAME_RUNNING_STATE
 
@@ -158,23 +162,23 @@ class World:
                 self.block = Block('assets/images/block.png', BLOCK_SCALE) # Block scale คือเอาขนาดภาพเท่าไหร่เทียบกับขนาดoriginal 1=100%
                 self.block.setup(LANE1_X, LANE_Y) #สร้างblock
                 self.block_list1.append(self.block) #add blockเข้าไปในlist block_list1
-                self.Lane1_Waittime = 20
+                self.Lane1_Waittime = LANE_SPAWN_WAITTIME
             if(Spawn_Lane == 2 and self.Lane2_Waittime <3): #ไม่ให้ออกติดกันเกินไปในช่องเดียวกัน
                 self.block = Block('assets/images/block.png', BLOCK_SCALE)
                 self.block.setup(LANE2_X, LANE_Y)
                 self.block_list2.append(self.block)
-                self.Lane2_Waittime = 20 #สร้างblockแล้วก็ใส่เวลารอของLaneนี้ใหม่ รอ1frame
+                self.Lane2_Waittime = LANE_SPAWN_WAITTIME #สร้างblockแล้วก็ใส่เวลารอของLaneนี้ใหม่
             if(Spawn_Lane == 3 and self.Lane3_Waittime <3):
                 self.block = Block('assets/images/block.png', BLOCK_SCALE)
                 self.block.setup(LANE3_X, LANE_Y)
                 self.block_list3.append(self.block)
-                self.Lane3_Waittime = 20
+                self.Lane3_Waittime = LANE_SPAWN_WAITTIME
         
         '''Check if block passed player line'''
         for block in self.block_list1:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
-            if(block.center_y<115):
+            if(block.center_y< LOWER_PRESS_AREA):
                 self.current_state = GAME_OVER_STATE
                 if(self.is_play_gameover_sound == 0):
                     arcade.sound.play_sound(self.game_over_sfx)
@@ -182,7 +186,7 @@ class World:
         for block in self.block_list2:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
-            if(block.center_y<115):
+            if(block.center_y< LOWER_PRESS_AREA):
                 self.current_state = GAME_OVER_STATE
                 if(self.is_play_gameover_sound == 0):
                     arcade.sound.play_sound(self.game_over_sfx)
@@ -190,7 +194,7 @@ class World:
         for block in self.block_list3:
             if self.current_state == GAME_RUNNING_STATE:
                 block.update(delta)
-            if(block.center_y<115):
+            if(block.center_y< LOWER_PRESS_AREA):
                 self.current_state = GAME_OVER_STATE
                 if(self.is_play_gameover_sound == 0):
                     arcade.sound.play_sound(self.game_over_sfx)
