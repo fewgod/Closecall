@@ -50,54 +50,69 @@ class World:
     def on_key_press(self, key, key_modifiers):
 
         if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.A):
-            if(self.block_list1 and round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
-                self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
+            if(self.block_list1):
+                if(round(self.block_list1[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+                    self.gain_score = 200 + round(self.multiplier*self.combo) #gain perfect score when press almost pass the player line
+                    self.score += self.gain_score
+                    self.combo += 1
+                    del self.block_list1[0]
+                    arcade.sound.play_sound(self.hit_left_sfx)
+                elif(self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list1[0].center_y >= LOWER_PRESS_AREA):
+                    self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
+                    self.score += self.gain_score
+                    self.combo += 1
+                    del self.block_list1[0]
+                    arcade.sound.play_sound(self.hit_left_sfx)
+                else: #When press outsize press area
+                    self.gain_score = -50 #score deduction when press outside
+                    self.score += self.gain_score
+                    self.combo = 0 #reset combo if press outside PRESS_AREA
+            else: #When press without any block in that lane
+                self.gain_score = -50 #score deduction when press without anyblock
                 self.score += self.gain_score
-                self.combo += 1
-                del self.block_list1[0]
-                arcade.sound.play_sound(self.hit_left_sfx)
-            elif(self.block_list1 and self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
-                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
-                self.score += self.gain_score
-                self.combo += 1
-                del self.block_list1[0]
-                arcade.sound.play_sound(self.hit_left_sfx)
-            else: #When press outside PRESS AREA
-                self.gain_score = -50 #score deduction when press outside
-                self.score += self.gain_score
-                self.combo = 0 #reset combo if press outside PRESS_AREA
+                self.combo = 0 #reset combo if press without anyblock
         
         if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.S):
-            if(self.block_list2 and round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
-                self.gain_score = 200 + round(self.multiplier*self.combo)
-                self.score += self.gain_score
-                self.combo += 1
-                del self.block_list2[0]
-                arcade.sound.play_sound(self.hit_mid_sfx)
-            elif(self.block_list2 and self.block_list2[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
-                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
-                self.score += self.gain_score
-                self.combo += 1
-                del self.block_list2[0]
-                arcade.sound.play_sound(self.hit_mid_sfx)
+            if(self.block_list2):
+                if(round(self.block_list2[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+                    self.gain_score = 200 + round(self.multiplier*self.combo)
+                    self.score += self.gain_score
+                    self.combo += 1
+                    del self.block_list2[0]
+                    arcade.sound.play_sound(self.hit_mid_sfx)
+                elif(self.block_list2[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
+                    self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
+                    self.score += self.gain_score
+                    self.combo += 1
+                    del self.block_list2[0]
+                    arcade.sound.play_sound(self.hit_mid_sfx)
+                else:
+                    self.gain_score = -50 
+                    self.score += self.gain_score
+                    self.combo = 0
             else:
                 self.gain_score = -50
                 self.score += self.gain_score
                 self.combo = 0
 
         if (self.current_state == GAME_RUNNING_STATE and key == arcade.key.D):
-            if(self.block_list3 and round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
-                self.gain_score = 200 + round(self.multiplier*self.combo)
-                self.score += self.gain_score
-                self.combo += 1
-                del self.block_list3[0]
-                arcade.sound.play_sound(self.hit_right_sfx)
-            elif(self.block_list3 and self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
-                self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
-                self.score += self.gain_score
-                self.combo += 1
-                del self.block_list3[0]
-                arcade.sound.play_sound(self.hit_right_sfx)
+            if(self.block_list3):
+                if(round(self.block_list3[0].center_y - PLAYER_LINE_Y)<= PERFECT_Y):
+                    self.gain_score = 200 + round(self.multiplier*self.combo)
+                    self.score += self.gain_score
+                    self.combo += 1
+                    del self.block_list3[0]
+                    arcade.sound.play_sound(self.hit_right_sfx)
+                elif(self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list3[0].center_y >= LOWER_PRESS_AREA):
+                    self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
+                    self.score += self.gain_score
+                    self.combo += 1
+                    del self.block_list3[0]
+                    arcade.sound.play_sound(self.hit_right_sfx)
+                else:
+                    self.gain_score = -50 
+                    self.score += self.gain_score
+                    self.combo = 0
             else:
                 self.gain_score = -50 
                 self.score += self.gain_score
