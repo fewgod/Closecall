@@ -25,7 +25,7 @@ class ClosecallWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SKY_BLUE)
-        self.background = arcade.load_texture("images/bgwithpressarea.jpg") #ใส่bg
+        self.background = arcade.load_texture("assets/images/bgwithpressarea.jpg") #ใส่bg
         self.world = World(width, height)
         self.score = 0
         self.combo = 0

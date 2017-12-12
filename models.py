@@ -7,8 +7,8 @@ LANE2_X = 300
 LANE3_X = 500
 LANE_Y = 750
 BLOCK_SCALE = 1
-PERFECT_Y = 33 #distance from player line when press for perfect score
-UPPER_PRESS_AREA = 163
+PERFECT_Y = 35 #distance from player line when press for perfect score
+UPPER_PRESS_AREA = 175
 LOWER_PRESS_AREA = 115
 INSTRUCTION_STATE = 0
 GAME_RUNNING_STATE = 1
@@ -43,9 +43,9 @@ class World:
         self.instruction_sprite.set_position(325,450)
         self.gameover_sprite = arcade.Sprite('assets/images/gameover.png')#show game over image when
         self.gameover_sprite.set_position(295,450)
-        #self.hit_sfx = arcade.sound.load_sound('assets/sound/')
-        #arcade.sound.play_sound(self.hit_sfx)
-
+        self.hit_left_sfx = arcade.sound.load_sound('assets/sound/hit_block_left_lane.wav')
+        self.hit_mid_sfx = arcade.sound.load_sound('assets/sound/hit_block_mid_lane.wav')
+        self.hit_right_sfx = arcade.sound.load_sound('assets/sound/hit_block_right_lane.wav')
     '''Button'''
     def on_key_press(self, key, key_modifiers):
 
@@ -55,11 +55,13 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list1[0]
+                arcade.sound.play_sound(self.hit_left_sfx)
             elif(self.block_list1 and self.block_list1[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
                 self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list1[0]
+                arcade.sound.play_sound(self.hit_left_sfx)
             else: #When press outside PRESS AREA
                 self.gain_score = -50 #score deduction when press outside
                 self.score += self.gain_score
@@ -71,11 +73,13 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list2[0]
+                arcade.sound.play_sound(self.hit_mid_sfx)
             elif(self.block_list2 and self.block_list2[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
                 self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list2[0]
+                arcade.sound.play_sound(self.hit_mid_sfx)
             else:
                 self.gain_score = -50
                 self.score += self.gain_score
@@ -87,11 +91,13 @@ class World:
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list3[0]
+                arcade.sound.play_sound(self.hit_right_sfx)
             elif(self.block_list3 and self.block_list3[0].center_y <= UPPER_PRESS_AREA and self.block_list2[0].center_y >= LOWER_PRESS_AREA):
                 self.gain_score = round(100 + ((self.multiplier*self.combo) *0.2))
                 self.score += self.gain_score
                 self.combo += 1
                 del self.block_list3[0]
+                arcade.sound.play_sound(self.hit_right_sfx)
             else:
                 self.gain_score = -50 
                 self.score += self.gain_score
@@ -129,18 +135,18 @@ class World:
         '''spawn block'''
         if(randint(1,100)<5 and self.current_state == GAME_RUNNING_STATE):
             Spawn_Lane = randint(1,3)
-            if(Spawn_Lane == 1 and self.Lane1_Waittime <5):
-                self.block = Block('images/block.png', BLOCK_SCALE) # Block scale คือเอาขนาดภาพเท่าไหร่เทียบกับขนาดoriginal 1=100%
+            if(Spawn_Lane == 1 and self.Lane1_Waittime <3):
+                self.block = Block('assets/images/block.png', BLOCK_SCALE) # Block scale คือเอาขนาดภาพเท่าไหร่เทียบกับขนาดoriginal 1=100%
                 self.block.setup(LANE1_X, LANE_Y) #สร้างblock
                 self.block_list1.append(self.block) #add blockเข้าไปในlist block_list1
                 self.Lane1_Waittime = 20
-            if(Spawn_Lane == 2 and self.Lane2_Waittime <5): #ไม่ให้ออกติดกันเกินไปในช่องเดียวกัน
-                self.block = Block('images/block.png', BLOCK_SCALE)
+            if(Spawn_Lane == 2 and self.Lane2_Waittime <3): #ไม่ให้ออกติดกันเกินไปในช่องเดียวกัน
+                self.block = Block('assets/images/block.png', BLOCK_SCALE)
                 self.block.setup(LANE2_X, LANE_Y)
                 self.block_list2.append(self.block)
                 self.Lane2_Waittime = 20 #สร้างblockแล้วก็ใส่เวลารอของLaneนี้ใหม่ รอ1frame
-            if(Spawn_Lane == 3 and self.Lane3_Waittime <5):
-                self.block = Block('images/block.png', BLOCK_SCALE)
+            if(Spawn_Lane == 3 and self.Lane3_Waittime <3):
+                self.block = Block('assets/images/block.png', BLOCK_SCALE)
                 self.block.setup(LANE3_X, LANE_Y)
                 self.block_list3.append(self.block)
                 self.Lane3_Waittime = 20
